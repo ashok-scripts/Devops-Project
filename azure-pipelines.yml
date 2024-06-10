@@ -8,11 +8,22 @@ trigger:
 
 pool:
   name: 'MyLinuxPool'
-
 steps:
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure_As_Sub-1(321058a0-12a9-46e3-bd92-379511da48d0)'
+    appType: 'webAppLinux'
+    WebAppName: 'MyWebApp225'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'WebApp-RG'
+    SlotName: 'production'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    RuntimeStack: 'TOMCAT|10.0-jre8'
+
 - task: Maven@3
   inputs:
-    mavenPomFile: 'MyWebApp225/pom.xml'
+    mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '11'
@@ -31,12 +42,3 @@ steps:
     PathtoPublish: '$(build.artifactstagingdirectory)'
     ArtifactName: 'Azure-Java'
     publishLocation: 'Container'
-
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure_As_Sub-1(321058a0-12a9-46e3-bd92-379511da48d0)'
-    appType: 'webAppLinux'
-    WebAppName: 'MyWebApp225'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    RuntimeStack: 'JAVA|11-java11'
