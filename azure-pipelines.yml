@@ -9,17 +9,13 @@ trigger:
 pool:
   name: 'MyLinuxPool'
 steps:
-- task: AzureRmWebAppDeployment@4
+- task: AzureWebApp@1
   inputs:
-    ConnectionType: 'AzureRM'
     azureSubscription: 'Azure_As_Sub-1(321058a0-12a9-46e3-bd92-379511da48d0)'
     appType: 'webAppLinux'
-    WebAppName: 'MyWebApp225'
-    deployToSlotOrASE: true
-    ResourceGroupName: 'WebApp-RG'
-    SlotName: 'production'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    RuntimeStack: 'TOMCAT|10.0-jre8'
+    appName: 'MyWebApp225'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    runtimeStack: 'TOMCAT|9.0-java11'
 
 - task: Maven@3
   inputs:
@@ -31,14 +27,3 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
-
-- task: CopyFiles@2
-  inputs:
-    contents: '**/*.war'
-    targetFolder: '$(build.artifactstagingdirectory)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-    ArtifactName: 'Azure-Java'
-    publishLocation: 'Container'
