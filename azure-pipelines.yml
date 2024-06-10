@@ -9,10 +9,20 @@ trigger:
 pool:
   name: 'MyLinuxPool'
 
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure_As_Sub-1(321058a0-12a9-46e3-bd92-379511da48d0)'
+    appType: 'webAppLinux'
+    WebAppName: 'MyWebApp225'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    RuntimeStack: 'JAVA|11-java11'
+    ScriptType: 'File Path'
+
 steps:
 - task: Maven@3
   inputs:
-    mavenPomFile: 'pom.xml'
+    mavenPomFile: 'MyWebApp225/pom.xml'
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '11.0.20.1'
