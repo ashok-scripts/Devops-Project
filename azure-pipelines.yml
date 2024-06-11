@@ -61,4 +61,4 @@ stages:
               azureSubscription: $(azureSubscription)
               appType: webAppLinux
               appName: $(webAppName)
-              package: '$(Pipeline.Workspace)/drop/*.jar'  # Refined pattern to match specific file
+              package: '$(Pipeline.Workspace)/drop/*.?(war|jar)'  # Refined pattern to match specific file
