@@ -28,14 +28,14 @@ stages:
     - task: Maven@3
       displayName: 'Maven Package'
       inputs:
-        mavenPomFile: 'pom.xml'
+        mavenPomFile: 'JavaWebApp357/pom.xml'
         goals: 'clean package'
 
     - task: CopyFiles@2
       displayName: 'Copy Files to artifact staging directory'
       inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
-        Contents: '**/target/*.jar'  # Adjusted pattern to match specific file type
+        Contents: '**/target/*.?(war|jar)'  # Adjusted pattern to match specific file type
         TargetFolder: $(Build.ArtifactStagingDirectory)
 
     - publish: $(Build.ArtifactStagingDirectory)
